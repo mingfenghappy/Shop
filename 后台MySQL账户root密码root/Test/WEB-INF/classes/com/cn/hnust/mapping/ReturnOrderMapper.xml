@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cn.hnust.dao.ReturnOrderMapper">
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.ReturnOrder">
+    <id column="returnId" jdbcType="INTEGER" property="returnid" />
+    <result column="orderNum" jdbcType="VARCHAR" property="ordernum" />
+    <result column="shopId" jdbcType="INTEGER" property="shopid" />
+    <result column="salesReturnId" jdbcType="INTEGER" property="salesreturnid" />
+    <result column="refundPrice" jdbcType="DOUBLE" property="refundprice" />
+    <result column="salesReturnExplain" jdbcType="VARCHAR" property="salesreturnexplain" />
+    <result column="salesReturnPictures" jdbcType="VARCHAR" property="salesreturnpictures" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endTime" jdbcType="VARCHAR" property="endtime" />
+    <result column="returnNum" jdbcType="VARCHAR" property="returnnum" />
+    <result column="returnCount" jdbcType="INTEGER" property="returnCount" />
+  </resultMap>
+  <resultMap id="BaseHashMap" type="com.cn.hnust.pojo.ReturnOrder">
+    <id column="returnId" jdbcType="INTEGER" property="returnid" />
+    <result column="orderNum" jdbcType="VARCHAR" property="ordernum" />
+    <result column="shopId" jdbcType="INTEGER" property="shopid" />
+    <result column="salesReturnId" jdbcType="INTEGER" property="salesreturnid" />
+    <result column="refundPrice" jdbcType="DOUBLE" property="refundprice" />
+    <result column="shopTotalPrices" jdbcType="DOUBLE" property="shopTotalPrices" />
+    <result column="salesReturnExplain" jdbcType="VARCHAR" property="salesreturnexplain" />
+    <result column="salesReturnPictures" jdbcType="VARCHAR" property="salesreturnpictures" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="starttime" />
+    <result column="endTime" jdbcType="VARCHAR" property="endtime" />
+    <result column="returnNum" jdbcType="VARCHAR" property="returnnum" />
+    <result column="returnCount" jdbcType="INTEGER" property="returnCount" />
+  </resultMap>
+   <resultMap id="RetrunDetail" type="com.cn.hnust.pojo.ReturnDetail">
+    <result column="returnReason" jdbcType="VARCHAR" property="returnReason" />
+    <result column="refundPrice" jdbcType="DOUBLE" property="orderRental" />
+    <result column="salesReturnExplain" jdbcType="VARCHAR" property="reasonfortheCredit" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="timeOfApplication" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="aRefundOfTime" />
+    <result column="returnNum" jdbcType="VARCHAR" property="refundIdInvalid" />
+    <result column="orderNum" jdbcType="VARCHAR" property="orderNum" />
+    <result column="orderType" jdbcType="INTEGER" property="orderType" />
+    <result column="shopPictureUrl" jdbcType="VARCHAR" property="shopPictureUrl" />
+    <result column="shopTitle" jdbcType="VARCHAR" property="shopTitle" />
+  </resultMap>
+  <resultMap id="AdminRetrunDetail" type="com.cn.hnust.pojo.AdminReturnDetail">
+  <result column="shopId" jdbcType="INTEGER" property="shopId" />
+    <result column="returnReason" jdbcType="VARCHAR" property="returnReason" />
+    <result column="refundPrice" jdbcType="DOUBLE" property="orderRental" />
+    <result column="salesReturnExplain" jdbcType="VARCHAR" property="reasonfortheCredit" />
+    <result column="startTime" jdbcType="TIMESTAMP" property="timeOfApplication" />
+      <result column="salesReturnPictures" jdbcType="VARCHAR" property="salesreturnpictures" />
+    <result column="endTime" jdbcType="TIMESTAMP" property="aRefundOfTime" />
+    <result column="returnNum" jdbcType="VARCHAR" property="refundIdInvalid" />
+    <result column="orderNum" jdbcType="VARCHAR" property="orderNum" />
+    <result column="orderType" jdbcType="INTEGER" property="orderType" />
+    <result column="shopPictureUrl" jdbcType="VARCHAR" property="shopPictureUrl" />
+    <result column="shopTitle" jdbcType="VARCHAR" property="shopTitle" />
+    <result column="userProvince" property="userprovince" jdbcType="VARCHAR" />
+    <result column="userCity" property="usercity" jdbcType="VARCHAR" />
+    <result column="userDistrict" property="userdistrict" jdbcType="VARCHAR" />
+    <result column="userDetailedAddress" property="userdetailedaddress" jdbcType="VARCHAR" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="userTelephone" property="usertelephone" jdbcType="VARCHAR" />
+    <result column="shopPrice" property="shopprice" jdbcType="DOUBLE" />
+	<result column="shopFreight" property="shopfreight" jdbcType="DOUBLE" />
+	<result column="returnCount" property="returnCount" jdbcType="INTEGER" />
+	<result column="orderType" property="orderType" jdbcType="INTEGER" />
+	<result column="cancelState" property="cancelState" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ReturnList" type="com.cn.hnust.pojo.ReturnProduct">
+    <result column="orderNum" jdbcType="VARCHAR" property="orderId" />
+    <result column="shopId" jdbcType="INTEGER" property="shopId" />
+    <result column="refundPrice" jdbcType="DOUBLE" property="orderRental" />
+    <result column="returnCount" jdbcType="INTEGER" property="shopNumber" />
+    <result column="shopPictureUrl" jdbcType="VARCHAR" property="shopPictureUrl" />
+    <result column="shopTitle" jdbcType="VARCHAR" property="shopTitle" />
+    <result column="shopPrice" jdbcType="DOUBLE" property="shopPrice" />
+    <result column="cancelState" jdbcType="INTEGER" property="cancelState" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    returnId, orderNum, shopId, salesReturnId, refundPrice, salesReturnExplain, salesReturnPictures, 
+    startTime, endTime, returnNum
+  </sql>
+  <select id="returnNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from shoporder 
+    right join returnorder 
+    on returnorder.orderNum = shoporder.orderNum
+    where shoporder.userId = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByReturnNum" resultMap="BaseResultMap">
+    select *
+    from returnorder 
+    where returnNum = #{returnnum,jdbcType=VARCHAR}
+  </select>
+  <select id="selectMapByReturnNum" resultType="java.util.HashMap">
+    select *
+    from returnorder 
+    left join shoporder
+    on returnorder.orderNum = shoporder.orderNum
+    where returnNum = #{returnnum,jdbcType=VARCHAR}
+  </select>
+  <select id="returnDetail"  resultMap="RetrunDetail">
+    select 
+    *
+    from shoporder 
+    right join returnorder 
+    on returnorder.orderNum = shoporder.orderNum
+    and returnorder.shopId = #{shopId,jdbcType=INTEGER}
+    left join product
+    on returnorder.shopId = product.shopId
+    left join returnReason
+    on returnorder.salesReturnId = returnReason.salesReturnId
+    where shoporder.userId = #{userId,jdbcType=INTEGER}
+    and shoporder.orderNum = #{orderNum,jdbcType=INTEGER}
+  </select>
+  <select id="returnDetailByReturnNum"  resultMap="AdminRetrunDetail">
+    select 
+    *
+    from returnorder 
+    left join product
+    on returnorder.shopId = product.shopId
+    left join shoporder
+    on returnorder.orderNum = shoporder.orderNum
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId 
+    left join returnReason
+    on returnorder.salesReturnId = returnReason.salesReturnId
+    where returnorder.returnNum = #{returnNum,jdbcType=VARCHAR}
+  </select>
+  <select id="returnDetailAll"  resultMap="AdminRetrunDetail">
+    select 
+    *
+    from returnorder 
+    left join product
+    on returnorder.shopId = product.shopId
+    left join shoporder
+    on returnorder.orderNum = shoporder.orderNum
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId 
+    left join returnReason
+    on returnorder.salesReturnId = returnReason.salesReturnId
+    limit #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+    <select id="returnAllCount"  resultType="java.lang.Integer">
+    select 
+    count(*)
+    from returnorder 
+    left join product
+    on returnorder.shopId = product.shopId
+    left join shoporder
+    on returnorder.orderNum = shoporder.orderNum
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId 
+    left join returnReason
+    on returnorder.salesReturnId = returnReason.salesReturnId
+  </select>
+  <select id="getReturnList" resultMap="ReturnList">
+    select *
+    from shoporder 
+    right join returnorder 
+    on returnorder.orderNum = shoporder.orderNum
+    left join product
+    on returnorder.shopId = product.shopId
+    left join order_product
+    on returnorder.orderNum = order_product.orderNum
+    and returnorder.shopId = order_product.shopId
+    where shoporder.userId = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from returnorder
+    where returnId = #{returnid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from returnorder
+    where returnId = #{returnid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.ReturnOrder">
+    insert into returnorder (returnId, orderNum, shopId, 
+      salesReturnId, refundPrice, salesReturnExplain, 
+      salesReturnPictures, startTime, endTime, 
+      returnNum)
+    values (#{returnid,jdbcType=INTEGER}, #{ordernum,jdbcType=VARCHAR}, #{shopid,jdbcType=INTEGER}, 
+      #{salesreturnid,jdbcType=INTEGER}, #{refundprice,jdbcType=DOUBLE}, #{salesreturnexplain,jdbcType=VARCHAR}, 
+      #{salesreturnpictures,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=VARCHAR}, 
+      #{returnnum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.ReturnOrder">
+    insert into returnorder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="returnid != null">
+        returnId,
+      </if>
+      <if test="ordernum != null">
+        orderNum,
+      </if>
+      <if test="shopid != null">
+        shopId,
+      </if>
+      <if test="salesreturnid != null">
+        salesReturnId,
+      </if>
+      <if test="refundprice != null">
+        refundPrice,
+      </if>
+      <if test="salesreturnexplain != null">
+        salesReturnExplain,
+      </if>
+      <if test="salesreturnpictures != null">
+        salesReturnPictures,
+      </if>
+      <if test="starttime != null">
+        startTime,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+      <if test="returnnum != null">
+        returnNum,
+      </if>
+       <if test="returnCount != null">
+        returnCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="returnid != null">
+        #{returnid,jdbcType=INTEGER},
+      </if>
+      <if test="ordernum != null">
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="shopid != null">
+        #{shopid,jdbcType=INTEGER},
+      </if>
+      <if test="salesreturnid != null">
+        #{salesreturnid,jdbcType=INTEGER},
+      </if>
+      <if test="refundprice != null">
+        #{refundprice,jdbcType=DOUBLE},
+      </if>
+      <if test="salesreturnexplain != null">
+        #{salesreturnexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesreturnpictures != null">
+        #{salesreturnpictures,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="returnnum != null">
+        #{returnnum,jdbcType=VARCHAR},
+      </if>
+        <if test="returnCount != null">
+        #{returnCount,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.ReturnOrder">
+    update returnorder
+    <set>
+      <if test="ordernum != null">
+        orderNum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="shopid != null">
+        shopId = #{shopid,jdbcType=INTEGER},
+      </if>
+      <if test="salesreturnid != null">
+        salesReturnId = #{salesreturnid,jdbcType=INTEGER},
+      </if>
+      <if test="refundprice != null">
+        refundPrice = #{refundprice,jdbcType=DOUBLE},
+      </if>
+      <if test="salesreturnexplain != null">
+        salesReturnExplain = #{salesreturnexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="salesreturnpictures != null">
+        salesReturnPictures = #{salesreturnpictures,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=VARCHAR},
+      </if>
+      <if test="returnnum != null">
+        returnNum = #{returnnum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        orderType = #{orderType,jdbcType=INTEGER},
+      </if>
+       <if test="cancelState != null">
+        cancelState = #{cancelState,jdbcType=INTEGER},
+      </if>
+    </set>
+    where returnId = #{returnid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.ReturnOrder">
+    update returnorder
+    set orderNum = #{ordernum,jdbcType=VARCHAR},
+      shopId = #{shopid,jdbcType=INTEGER},
+      salesReturnId = #{salesreturnid,jdbcType=INTEGER},
+      refundPrice = #{refundprice,jdbcType=DOUBLE},
+      salesReturnExplain = #{salesreturnexplain,jdbcType=VARCHAR},
+      salesReturnPictures = #{salesreturnpictures,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=VARCHAR},
+      returnNum = #{returnnum,jdbcType=VARCHAR}
+    where returnId = #{returnid,jdbcType=INTEGER}
+  </update>
+</mapper>

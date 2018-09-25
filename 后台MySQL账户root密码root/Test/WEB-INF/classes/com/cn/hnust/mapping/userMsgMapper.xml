@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.userMsgMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.userMsg" >
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="messagePictureType" property="messagePictureType" jdbcType="INTEGER" />
+    <result column="msg" property="msg" jdbcType="VARCHAR" />
+    <result column="msgtime" property="msgtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from usermsg
+    where userId = #{userId,jdbcType=INTEGER}
+  </select>
+    <select id="selectCountByUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*)
+    from usermsg
+    where userId = #{userId,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.userMsg" >
+    insert into usermsg (userId, msg, msgtime
+      )
+    values (#{userid,jdbcType=INTEGER}, #{msg,jdbcType=VARCHAR}, #{msgtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.userMsg" >
+    insert into usermsg
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="msg != null" >
+        msg,
+      </if>
+      <if test="msgtime != null" >
+        msgtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="msg != null" >
+        #{msg,jdbcType=VARCHAR},
+      </if>
+      <if test="msgtime != null" >
+        #{msgtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.SecondLevelMapper" >
+ <resultMap id="FirstResultMap" type="com.cn.hnust.pojo.FirstResultMap" >
+    <result column="classifyId" property="stairId" jdbcType="INTEGER" />
+    <result column="classifyTitle" property="stairTitle" jdbcType="VARCHAR" />
+    <collection property="secondLevelList" ofType="com.cn.hnust.pojo.SecondResult">
+     <id column="secondLevelId" property="secondlevelid" jdbcType="INTEGER" />
+   	 <result column="secondLevelTitle" property="secondleveltitle" jdbcType="VARCHAR" />
+   	 <result column="secondLevelPictureUrl" property="secondlevelpictureurl" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.SecondLevel" >
+    <id column="secondLevelId" property="secondlevelid" jdbcType="INTEGER" />
+    <result column="secondLevelTitle" property="secondleveltitle" jdbcType="VARCHAR" />
+    <result column="secondLevelPictureUrl" property="secondlevelpictureurl" jdbcType="VARCHAR" />
+    <result column="classifyId" property="classifyid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    secondLevelId, secondLevelTitle, secondLevelPictureUrl, classifyId
+  </sql>
+  <sql id="All_Column_List" >
+    second_level.secondLevelId, second_level.secondLevelTitle, second_level.secondLevelPictureUrl, 
+    classify.classifyId,classify.classifyTitle
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from second_level
+    where secondLevelId = #{secondlevelid,jdbcType=INTEGER}
+  </select>
+    <select id="selectAllSecondClass" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from second_level
+    </select>
+  <select id="selectAllClassify" resultMap="FirstResultMap">
+    select 
+    <include refid="All_Column_List" />
+    from classify
+    left join second_level on classify.classifyId=second_level.classifyId
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from second_level
+    where secondLevelId = #{secondlevelid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.SecondLevel" >
+    insert into second_level (secondLevelId, secondLevelTitle, 
+      secondLevelPictureUrl, classifyId)
+    values (#{secondlevelid,jdbcType=INTEGER}, #{secondleveltitle,jdbcType=VARCHAR}, 
+      #{secondlevelpictureurl,jdbcType=VARCHAR}, #{classifyid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.SecondLevel" >
+    insert into second_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="secondlevelid != null" >
+        secondLevelId,
+      </if>
+      <if test="secondleveltitle != null" >
+        secondLevelTitle,
+      </if>
+      <if test="secondlevelpictureurl != null" >
+        secondLevelPictureUrl,
+      </if>
+      <if test="classifyid != null" >
+        classifyId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="secondlevelid != null" >
+        #{secondlevelid,jdbcType=INTEGER},
+      </if>
+      <if test="secondleveltitle != null" >
+        #{secondleveltitle,jdbcType=VARCHAR},
+      </if>
+      <if test="secondlevelpictureurl != null" >
+        #{secondlevelpictureurl,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyid != null" >
+        #{classifyid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.SecondLevel" >
+    update second_level
+    <set >
+      <if test="secondleveltitle != null" >
+        secondLevelTitle = #{secondleveltitle,jdbcType=VARCHAR},
+      </if>
+      <if test="secondlevelpictureurl != null" >
+        secondLevelPictureUrl = #{secondlevelpictureurl,jdbcType=VARCHAR},
+      </if>
+      <if test="classifyid != null" >
+        classifyId = #{classifyid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where secondLevelId = #{secondlevelid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.SecondLevel" >
+    update second_level
+    set secondLevelTitle = #{secondleveltitle,jdbcType=VARCHAR},
+      secondLevelPictureUrl = #{secondlevelpictureurl,jdbcType=VARCHAR},
+      classifyId = #{classifyid,jdbcType=INTEGER}
+    where secondLevelId = #{secondlevelid,jdbcType=INTEGER}
+  </update>
+</mapper>

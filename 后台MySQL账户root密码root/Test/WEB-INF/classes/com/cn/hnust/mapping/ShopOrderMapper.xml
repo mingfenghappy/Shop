@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.ShopOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.ShopOrder" >
+    <id column="orderId" property="orderid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="userAddreessId" property="useraddreessid" jdbcType="INTEGER" />
+    <result column="rentalPrice" property="rentalprice" jdbcType="DOUBLE" />
+    <result column="buyerMessage" property="buyermessage" jdbcType="VARCHAR" />
+    <result column="orderNum" property="ordernum" jdbcType="VARCHAR" />
+    <result column="orderType" property="orderType" jdbcType="INTEGER" />
+    <result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+    <resultMap id="OrderDetail" type="com.cn.hnust.pojo.OrderDetail" >
+    <result column="userAddreessId" property="useraddreessid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="userTelephone" property="usertelephone" jdbcType="VARCHAR" />
+    <result column="buyerMessage" property="buyermessage" jdbcType="VARCHAR" />
+    <result column="orderNum" property="ordernum" jdbcType="VARCHAR" />
+    <result column="orderType" property="orderType" jdbcType="INTEGER" />
+    <result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />	
+    <result column="shopTotalPrices" property="shopTotalPrices" jdbcType="DOUBLE" />
+    <result column="expressagePrices" property="expressagePrices" jdbcType="DOUBLE" />
+    <result column="sumofSalesPrice" property="sumofSalesPrice" jdbcType="DOUBLE" />
+    <collection property="orderShopList" ofType="com.cn.hnust.pojo.MyProduct">
+    	<result column="shopTitle" property="shopTitle" jdbcType="VARCHAR" />
+		<result column="shopPictureUrl" property="shopPictureUrl" jdbcType="VARCHAR" />
+		<result column="shopPrice" property="shopPrice" jdbcType="DOUBLE" />
+		<result column="ProductNum" property="shopNumber" jdbcType="INTEGER" />
+		<result column="shopId" property="shopId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="cancelState" property="cancelState" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+  <resultMap id="AdminOrderDetail" type="com.cn.hnust.pojo.AdminOrderDetail" >
+    <result column="userAddreessId" property="useraddreessid" jdbcType="INTEGER" />
+    <result column="userName" property="username" jdbcType="VARCHAR" />
+    <result column="userTelephone" property="usertelephone" jdbcType="VARCHAR" />
+    <result column="buyerMessage" property="buyermessage" jdbcType="VARCHAR" />
+    <result column="orderNum" property="ordernum" jdbcType="VARCHAR" />
+    <result column="orderType" property="orderType" jdbcType="INTEGER" />
+    <result column="orderTime" property="orderTime" jdbcType="TIMESTAMP" />	
+    <result column="shopTotalPrices" property="shopTotalPrices" jdbcType="DOUBLE" />
+    <result column="expressagePrices" property="expressagePrices" jdbcType="DOUBLE" />
+    <result column="sumofSalesPrice" property="sumofSalesPrice" jdbcType="DOUBLE" />
+    <result column="userProvince" property="userprovince" jdbcType="VARCHAR" />
+    <result column="userCity" property="usercity" jdbcType="VARCHAR" />
+    <result column="userDistrict" property="userdistrict" jdbcType="VARCHAR" />
+    <result column="userDetailedAddress" property="userdetailedaddress" jdbcType="VARCHAR" />
+    <collection property="orderShopList" ofType="com.cn.hnust.pojo.MyProduct">
+    	<result column="shopTitle" property="shopTitle" jdbcType="VARCHAR" />
+		<result column="shopPictureUrl" property="shopPictureUrl" jdbcType="VARCHAR" />
+		<result column="shopPrice" property="shopPrice" jdbcType="DOUBLE" />
+		<result column="ProductNum" property="shopNumber" jdbcType="INTEGER" />
+		<result column="shopId" property="shopId" jdbcType="INTEGER" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="cancelState" property="cancelState" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+  <resultMap id="MyOrderMap" type="com.cn.hnust.pojo.MyOrder" >
+    <result column="orderNum" property="orderId" jdbcType="VARCHAR" />
+    <result column="orderType" property="orderType" jdbcType="INTEGER" />
+    <result column="rentalPrice" property="orderRental" jdbcType="DOUBLE" />
+    <collection property="orderShopList" ofType="com.cn.hnust.pojo.MyProduct">
+    	<result column="shopTitle" property="shopTitle" jdbcType="VARCHAR" />
+		<result column="shopPictureUrl" property="shopPictureUrl" jdbcType="VARCHAR" />
+		<result column="shopPrice" property="shopPrice" jdbcType="DOUBLE" />
+		<result column="ProductNum" property="shopNumber" jdbcType="INTEGER" />
+		<result column="shopId" property="shopId" jdbcType="INTEGER" />
+    </collection>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    orderId, userId, userAddreessId, rentalPrice, buyerMessage, orderNum,orderType,
+    orderTime
+  </sql>
+  <update id="setTimer">
+  SET GLOBAL event_scheduler = 1;
+  </update>
+  <insert id="delimi">
+  DELIMITER $$
+  </insert>
+  <insert id="delimiBack">
+  DELIMITER ;
+  </insert>
+  <update id="timerMy1">
+	create event a${orderNum} 
+	on schedule at now()+10
+	on completion PRESERVE
+	do
+	begin 
+	update shoporder set rentalPrice=60
+	where orderNum = #{orderNum,jdbcType=VARCHAR};
+	update shoporder set buyerMessage='wanglining'
+	where orderNum=4;
+	end $$
+  </update>
+  <update id="timerMy" statementType="CALLABLE">
+	create event a${orderNum}
+	on schedule at  current_timestamp + interval 1 minute
+	on completion not PRESERVE
+	do
+	call deleteOrder(#{orderNum,jdbcType=VARCHAR});
+  </update>
+  <update id="closeTimer">
+    ALTER EVENT a${orderNum} DISABLE;
+  </update>
+  <update id="deleteTimer">
+  	drop event if exists a${orderNum};
+  </update>
+  <select id="selectOrderDetail" resultMap="MyOrderMap" >
+    select *
+    from shoporder
+    left join order_product 
+    on shoporder.orderId=order_product.orderId
+    left join product
+    on order_product.shopId=product.shopId
+    where userId = #{userId,jdbcType=INTEGER} and orderType = #{orderType,jdbcType=INTEGER} 
+    limit #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER}
+  </select>
+  <select id="getOrderDetail" resultMap="OrderDetail" >
+    select *
+    from shoporder
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId
+    left join order_product
+    on shoporder.orderNum=order_product.orderNum
+    left join product
+    on order_product.shopId=product.shopId
+    where shoporder.orderNum = #{orderNum,jdbcType=VARCHAR}
+    and shoporder.userId = #{userId,jdbcType=INTEGER}
+  </select>
+  <select id="getAdminOrderDetail" resultMap="AdminOrderDetail" >
+    select *
+    from shoporder
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId
+    left join order_product
+    on shoporder.orderNum=order_product.orderNum
+    left join product
+    on order_product.shopId=product.shopId
+    where shoporder.orderNum = #{orderNum,jdbcType=VARCHAR}
+  </select>  
+  <select id="searchAdminOrderDetail" resultMap="AdminOrderDetail" >
+    select * from 
+    (select shoporder.*,address.userAddreessId as addr,address.userName
+    from shoporder
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId
+    left join order_product
+    on shoporder.orderNum=order_product.orderNum
+    left join product
+    on order_product.shopId=product.shopId) as tmp
+    where (userName=#{userName,jdbcType=VARCHAR} or orderNum=#{orderNum,jdbcType=VARCHAR}) 
+    and orderType=#{orderType,jdbcType=INTEGER};
+  </select> 
+  <select id="getAllAdminOrderDetail" resultMap="AdminOrderDetail" >
+    select *
+    from shoporder
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId
+    left join order_product
+    on shoporder.orderNum=order_product.orderNum
+    left join product
+    on order_product.shopId=product.shopId
+    limit #{page,jdbcType=INTEGER},#{rows,jdbcType=INTEGER} 
+  </select>
+    <select id="getCountOrder" resultType="java.lang.Integer" >
+  	select count(*)
+    from shoporder
+    left join address
+    on shoporder.userAddreessId=address.userAddreessId
+    left join order_product
+    on shoporder.orderNum=order_product.orderNum
+    left join product
+    on order_product.shopId=product.shopId
+  </select>
+  
+  <select id="computeUnPayCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*)
+    from shoporder
+    where userId = #{userId,jdbcType=INTEGER} and orderType = 1
+  </select>
+  <select id="computeUnSendCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*)
+    from shoporder
+    where userId = #{userId,jdbcType=INTEGER} and orderType = 2
+  </select>
+  <select id="computeUnRecieveCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*)
+    from shoporder
+    where userId = #{userId,jdbcType=INTEGER} and orderType = 3
+  </select>
+  <select id="computeUnCommentCount" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(*)
+    from shoporder
+    where userId = #{userId,jdbcType=INTEGER} and orderType = 4
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shoporder
+    where orderId = #{orderid,jdbcType=INTEGER}
+  </select>
+  <select id="getOrderByOrderNum" resultMap="BaseResultMap" >
+    select *
+    from shoporder
+    where orderNum = #{orderNum,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shoporder
+    where orderId = #{orderid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByOrderNumAndUserId" >
+    delete from shoporder
+    where orderNum = #{orderNum,jdbcType=VARCHAR}
+    and userId = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByOrderNum" >
+    delete from shoporder
+    where orderNum = #{orderNum,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.ShopOrder" >
+    insert into shoporder (orderId, userId, userAddreessId, 
+      rentalPrice, buyerMessage, orderNum,orderType
+      )
+    values (#{orderid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{useraddreessid,jdbcType=INTEGER}, 
+      #{rentalprice,jdbcType=DOUBLE}, #{buyermessage,jdbcType=VARCHAR}, #{ordernum,jdbcType=VARCHAR},
+      #{orderType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.ShopOrder" >
+   	  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="orderid">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+    insert into shoporder
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        orderId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="useraddreessid != null" >
+        userAddreessId,
+      </if>
+      <if test="rentalprice != null" >
+        rentalPrice,
+      </if>
+      <if test="buyermessage != null" >
+        buyerMessage,
+      </if>
+      <if test="ordernum != null" >
+        orderNum,
+      </if>
+      <if test="orderType != null" >
+        orderType,
+      </if>
+        <if test="shopTotalPrices != null" >
+        shopTotalPrices,
+      </if>
+         <if test="expressagePrices != null" >
+        expressagePrices,
+      </if>
+         <if test="sumofSalesPrice != null" >
+        sumofSalesPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderid != null" >
+        #{orderid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="useraddreessid != null" >
+        #{useraddreessid,jdbcType=INTEGER},
+      </if>
+      <if test="rentalprice != null" >
+        #{rentalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="buyermessage != null" >
+        #{buyermessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=VARCHAR},
+      </if>
+       <if test="orderType != null" >
+        #{orderType,jdbcType=INTEGER},
+      </if>
+       <if test="shopTotalPrices != null" >
+        #{shopTotalPrices,jdbcType=DOUBLE},
+      </if>
+         <if test="expressagePrices != null" >
+        #{expressagePrices,jdbcType=DOUBLE},
+      </if>
+         <if test="sumofSalesPrice != null" >
+        #{sumofSalesPrice,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+    <update id="updateByOrderNumAndUserIdSelective" parameterType="com.cn.hnust.pojo.ShopOrder" >
+    update shoporder
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="useraddreessid != null" >
+        userAddreessId = #{useraddreessid,jdbcType=INTEGER},
+      </if>
+      <if test="rentalprice != null" >
+        rentalPrice = #{rentalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="buyermessage != null" >
+        buyerMessage = #{buyermessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        orderNum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        orderType = #{orderType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where orderNum = #{ordernum,jdbcType=VARCHAR}
+    and userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByOrderNumSelective" parameterType="com.cn.hnust.pojo.ShopOrder" >
+    update shoporder
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="useraddreessid != null" >
+        userAddreessId = #{useraddreessid,jdbcType=INTEGER},
+      </if>
+      <if test="rentalprice != null" >
+        rentalPrice = #{rentalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="buyermessage != null" >
+        buyerMessage = #{buyermessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        orderNum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        orderType = #{orderType,jdbcType=INTEGER},
+      </if>
+      <if test="shopTotalPrices != null" >
+        shopTotalPrices = #{shopTotalPrices,jdbcType=DOUBLE},
+      </if>
+       <if test="expressagePrices != null" >
+        expressagePrices = #{expressagePrices,jdbcType=DOUBLE},
+      </if>
+      <if test="sumofSalesPrice != null" >
+        sumofSalesPrice = #{sumofSalesPrice,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where orderNum = #{ordernum,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.ShopOrder" >
+    update shoporder
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="useraddreessid != null" >
+        userAddreessId = #{useraddreessid,jdbcType=INTEGER},
+      </if>
+      <if test="rentalprice != null" >
+        rentalPrice = #{rentalprice,jdbcType=DOUBLE},
+      </if>
+      <if test="buyermessage != null" >
+        buyerMessage = #{buyermessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ordernum != null" >
+        orderNum = #{ordernum,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null" >
+        orderType = #{orderType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where orderId = #{orderid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.ShopOrder" >
+    update shoporder
+    set userId = #{userid,jdbcType=INTEGER},
+      userAddreessId = #{useraddreessid,jdbcType=INTEGER},
+      rentalPrice = #{rentalprice,jdbcType=DOUBLE},
+      buyerMessage = #{buyermessage,jdbcType=VARCHAR},
+      orderNum = #{ordernum,jdbcType=VARCHAR},
+      orderType = #{orderType,jdbcType=INTEGER}
+    where orderId = #{orderid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cn.hnust.dao.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cn.hnust.pojo.UserInfo" >
+    <id column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="passWord" property="password" jdbcType="VARCHAR" />
+    <result column="myCode" property="mycode" jdbcType="VARCHAR" />
+    <result column="phoneNumber" property="phonenumber" jdbcType="VARCHAR" />
+    <result column="identity" property="identity" jdbcType="VARCHAR" />
+    <result column="myUserCount" property="myusercount" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="DOUBLE" />
+    <result column="sexType" property="sextype" jdbcType="INTEGER" />
+    <result column="regiTime" property="regitime" jdbcType="VARCHAR" />
+    <result column="invitationCode" property="invitationcode" jdbcType="VARCHAR" />
+    <result column="headPortrait" property="headportrait" jdbcType="VARCHAR" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="userGrade" property="userGrade" jdbcType="INTEGER" />
+  </resultMap>
+    <resultMap id="PersonMap" type="com.cn.hnust.pojo.UserPerson" >
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="phoneNumber" property="phonenumber" jdbcType="VARCHAR" />
+    <result column="sexType" property="sextype" jdbcType="INTEGER" />
+    <result column="headPortrait" property="headportrait" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    userId, nickname, passWord, myCode, phoneNumber, identity, myUserCount, money, sexType, 
+    regiTime, invitationCode, headPortrait,userGrade
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+  <select id="selectPersonByPrimaryKey" resultMap="PersonMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </select>
+   <select id="selectByPhoneNumber" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where phoneNumber = #{phonenumber,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where openId = #{openid,jdbcType=VARCHAR}
+  </select>
+  <select id="login" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where phoneNumber = #{phone,jdbcType=VARCHAR} and passWord = #{password,jdbcType=VARCHAR}
+  </select>
+  <select id="loginThrid" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where openid = #{openId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where userId = #{userid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cn.hnust.pojo.UserInfo" >
+    insert into user (userId, nickname, passWord, 
+      myCode, phoneNumber, identity, 
+      myUserCount, money, sexType, 
+      regiTime, invitationCode, headPortrait,userGrade
+      )
+    values (#{userid,jdbcType=INTEGER}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{mycode,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, #{identity,jdbcType=VARCHAR}, 
+      #{myusercount,jdbcType=INTEGER}, #{money,jdbcType=DOUBLE}, #{sextype,jdbcType=INTEGER}, 
+      #{regitime,jdbcType=TIMESTAMP}, #{invitationcode,jdbcType=VARCHAR}, #{headportrait,jdbcType=VARCHAR}
+      ,#{userGrade,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cn.hnust.pojo.UserInfo" >
+   	  <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="userid">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="openid != null" >
+        openid,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="password != null" >
+        passWord,
+      </if>
+      <if test="mycode != null" >
+        myCode,
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber,
+      </if>
+      <if test="identity != null" >
+        identity,
+      </if>
+      <if test="myusercount != null" >
+        myUserCount,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="sextype != null" >
+        sexType,
+      </if>
+      <if test="regitime != null" >
+        regiTime,
+      </if>
+      <if test="invitationcode != null" >
+        invitationCode,
+      </if>
+      <if test="headportrait != null" >
+        headPortrait,
+      </if>
+      <if test="userGrade != null" >
+        userGrade,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mycode != null" >
+        #{mycode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="myusercount != null" >
+        #{myusercount,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="sextype != null" >
+        #{sextype,jdbcType=INTEGER},
+      </if>
+      <if test="regitime != null" >
+        #{regitime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationcode != null" >
+        #{invitationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null" >
+        #{userGrade,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.UserInfo" >
+    update user
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        passWord = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mycode != null" >
+        myCode = #{mycode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        identity = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="myusercount != null" >
+        myUserCount = #{myusercount,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="sextype != null" >
+        sexType = #{sextype,jdbcType=INTEGER},
+      </if>
+      <if test="regitime != null" >
+        regiTime = #{regitime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationcode != null" >
+        invitationCode = #{invitationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        headPortrait = #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null" >
+       userGrade = #{userGrade,jdbcType=INTEGER},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  
+   <update id="updatePersonByPrimaryKeySelective" parameterType="com.cn.hnust.pojo.UserPerson" >
+    update user
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="sextype != null" >
+        sexType = #{sextype,jdbcType=INTEGER},
+      </if>
+      <if test="headportrait != null" >
+        headPortrait = #{headportrait,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPhoneNumberSelective" parameterType="com.cn.hnust.pojo.UserInfo" >
+    update user
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        passWord = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mycode != null" >
+        myCode = #{mycode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        identity = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="myusercount != null" >
+        myUserCount = #{myusercount,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="sextype != null" >
+        sexType = #{sextype,jdbcType=INTEGER},
+      </if>
+      <if test="regitime != null" >
+        regiTime = #{regitime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationcode != null" >
+        invitationCode = #{invitationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        headPortrait = #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null" >
+        userGrade = #{userGrade,jdbcType=INTEGER},
+      </if>
+    </set>
+    where phoneNumber = #{phonenumber,jdbcType=VARCHAR}
+  </update>
+    <update id="updateByIdAndPassSelective" parameterType="com.cn.hnust.pojo.UserInfo" >
+    update user
+    <set >
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        passWord = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="mycode != null" >
+        myCode = #{mycode,jdbcType=VARCHAR},
+      </if>
+      <if test="phonenumber != null" >
+        phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="identity != null" >
+        identity = #{identity,jdbcType=VARCHAR},
+      </if>
+      <if test="myusercount != null" >
+        myUserCount = #{myusercount,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="sextype != null" >
+        sexType = #{sextype,jdbcType=INTEGER},
+      </if>
+      <if test="regitime != null" >
+        regiTime = #{regitime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="invitationcode != null" >
+        invitationCode = #{invitationcode,jdbcType=VARCHAR},
+      </if>
+      <if test="headportrait != null" >
+        headPortrait = #{headportrait,jdbcType=VARCHAR},
+      </if>
+      <if test="userGrade != null" >
+        userGrade = #{userGrade,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where passWord = #{password,jdbcType=VARCHAR} and phoneNumber = #{phonenumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cn.hnust.pojo.UserInfo" >
+    update user
+    set nickname = #{nickname,jdbcType=VARCHAR},
+      passWord = #{password,jdbcType=VARCHAR},
+      myCode = #{mycode,jdbcType=VARCHAR},
+      phoneNumber = #{phonenumber,jdbcType=VARCHAR},
+      identity = #{identity,jdbcType=VARCHAR},
+      myUserCount = #{myusercount,jdbcType=INTEGER},
+      money = #{money,jdbcType=DOUBLE},
+      sexType = #{sextype,jdbcType=INTEGER},
+      regiTime = #{regitime,jdbcType=TIMESTAMP},
+      invitationCode = #{invitationcode,jdbcType=VARCHAR},
+      headPortrait = #{headportrait,jdbcType=VARCHAR},
+      userGrade = #{userGrade,jdbcType=INTEGER}
+    where userId = #{userid,jdbcType=INTEGER}
+  </update>
+</mapper>
