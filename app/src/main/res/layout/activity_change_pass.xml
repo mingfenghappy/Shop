@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:orientation="vertical"
+    tools:context=".activity.ChangePassActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_titleBar_height"
+        android:background="@color/title_bar_color">
+
+        <ImageView
+            android:id="@+id/login_titleBar_iv_back"
+            style="@style/common_left_back_imageView_style" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_vertical"
+            android:text="@string/login_titleBar_login"
+            android:textColor="@color/textColor_32"
+            android:textSize="@dimen/login_titleBar_login_size" />
+
+        <TextView
+            android:id="@+id/login_titleBar_tv_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="@string/login_titleBar_register"
+            android:textColor="@color/orange"
+            android:textSize="@dimen/login_titleBar_register_size" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="40dp">
+
+        <EditText
+            android:id="@+id/et_user"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:hint="手机号" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_yanzhengma"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:hint="验证码" />
+
+
+            <View
+                android:layout_width="5px"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="#eaeaea" />
+
+            <!--<TextView-->
+            <!--android:id="@+id/mTv"-->
+            <!--android:onClick="getSMS"-->
+            <!--android:textSize="18sp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:text="获取验证码" />-->
+            <com.yumo.education.utils.DiyView.BackTimeView
+                android:id="@+id/register_timer"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:gravity="center"
+                android:onClick="changeSMS"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:text="获取验证码"
+                android:textAllCaps="false"
+                android:textColor="#1179c4"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="密码是6-16位数字和字母组合"
+            android:textColor="#eaeaea" />
+
+        <EditText
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="密码"
+            android:maxLength="20"
+            android:paddingTop="1dp" />
+
+        <TextView
+            android:id="@+id/tv_tip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请再次确认密码"
+            android:textColor="#eaeaea" />
+
+        <EditText
+            android:id="@+id/et_pass2"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="确认密码"
+            android:paddingTop="1dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="5px"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:background="#eaeaea" />
+
+    <Button
+
+        android:id="@+id/button_change"
+        android:layout_width="290dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_selector"
+        android:gravity="center"
+        android:text="提交"
+        android:textColor="#666" />
+</LinearLayout>

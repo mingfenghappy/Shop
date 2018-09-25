@@ -1,0 +1,76 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'save.state'
+android {
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.yumo.education"
+        minSdkVersion 17
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			 shrinkResources true  // 移除无用的resource文件
+        }
+    }
+}
+//sourceSets {
+//    main {
+//        jniLibs.srcDirs = ['libs']
+//    }
+//}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:support-v4:25.3.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    //    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    //        exclude group: 'com.android.support', module: 'support-annotations'
+    //    })
+    implementation 'com.android.support:design:25.3.1'
+    //注解
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //加载图片
+    implementation 'com.youth.banner:banner:+'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    //网络请求
+    implementation 'com.zhy:okhttputils:2.0.0'
+    implementation 'com.squareup.okhttp:okhttp:2.4.0'
+    implementation 'com.squareup.okio:okio:1.5.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.0'
+    //数据解析
+    implementation 'com.alibaba:fastjson:1.2.17'
+    implementation 'com.android.support:recyclerview-v7:25.3.1'
+    //recycleView的分割线
+    implementation 'com.dinuscxj:recycleritemdecoration:1.0.0'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    //下拉加载上拉刷新
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+    //图片选择器
+    implementation 'cn.finalteam:galleryfinal:1.4.8.7'
+    implementation 'cn.finalteam.rxgalleryfinal:library:1.0.9'
+    //联动
+    implementation 'com.contrarywind:Android-PickerView:3.2.5'
+    //轮播图
+    implementation 'com.bigkoo:convenientbanner:2.0.5'
+    //eventbus
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    /** **********图片加载框架fresco库开始 **************/
+    implementation 'com.facebook.fresco:fresco:0.12.0'
+    /** **********图片加载框架fresco库结束 **************/
+    implementation 'com.android.support:gridlayout-v7:25.3.1'
+    implementation files('libs/open_sdk_r6008_lite.jar')
+}

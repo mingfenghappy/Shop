@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/px_80"
+        android:layout_marginRight="@dimen/px_80"
+        android:background="@drawable/bg_write_corner_10"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/pw_dialogHint_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/px_60"
+            android:layout_marginTop="@dimen/px_60"
+            android:gravity="center"
+            android:paddingLeft="@dimen/px_30"
+            android:paddingRight="@dimen/px_30"
+            android:text="选择性别"
+            android:textColor="#666666"
+            android:textSize="@dimen/px_text_24" />
+
+        <include layout="@layout/include_line" />
+
+        <TextView
+            android:id="@+id/pw_dialogHint_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_80"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/themeColor"
+            android:textSize="@dimen/px_text_26" />
+
+    </LinearLayout>
+
+</RelativeLayout>

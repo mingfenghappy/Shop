@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:orientation="vertical">
+    <!-- Login progress -->
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/head_img"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:onClick="setPhoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:src="@mipmap/nav_head" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp">
+
+        <EditText
+            android:id="@+id/et_user"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="5dp"
+            android:hint="手机号" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_yanzhengma"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="2"
+                android:hint="验证码" />
+
+            <View
+                android:layout_width="5px"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical"
+                android:background="#eaeaea" />
+
+            <TextView
+                android:id="@+id/mTv"
+                android:onClick="getSMS"
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="获取验证码" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_tip"
+            android:text="密码是6-16位数字和字母组合"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#eaeaea" />
+        <EditText
+            android:id="@+id/et_pass"
+
+            android:maxLength="20"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="密码"
+            android:paddingTop="1dp" />
+        <TextView
+            android:text="请再次确认密码"
+            android:id="@+id/tv_tip2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#eaeaea" />
+        <EditText
+            android:id="@+id/et_pass2"
+            android:maxLength="20"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="确认密码"
+            android:paddingTop="1dp" />
+        <EditText
+            android:id="@+id/et_yaoqingma"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="邀请码（选填）"
+            android:paddingTop="1dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="@dimen/px_20"
+            android:textColor="#eaeaea"
+            android:text="已阅读并同意" />
+
+        <TextView
+            android:onClick="xieyi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="《用户注册协议》"
+            android:paddingBottom="40dp"
+            android:textColor="#ff00ff" />
+    </LinearLayout>
+
+    <Button
+
+        android:id="@+id/button"
+        android:layout_width="290dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_selector"
+        android:gravity="center"
+        android:text="@string/lijizhuce"
+        android:textColor="#666" />
+
+</LinearLayout>
