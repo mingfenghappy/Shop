@@ -16,7 +16,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			 shrinkResources true  // 移除无用的resource文件
+			 //shrinkResources true  // 移除无用的resource文件
         }
     }
 }
